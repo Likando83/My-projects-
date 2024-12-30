@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Day Weather Outlook</title>
+    <link rel="stylesheet" href="five-day.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        :root {
+            --main-color: #1E3A5F; /* Deep blue */
+            --secondary-color: #3C8DAD; /* Sea blue */
+            --accent-color: #FF6F61; /* Coral */
+            --bg-color: #F5F5F5; /* Light gray background */
+            --light-bg: #FFFFFF; /* White for containers */
+            --border-color: #CCCCCC; /* Light gray for borders */
+            --btn-color: #1E3A5F; /* Deep blue for buttons */
+            --hover-color: #FF6F61; /* Coral for hover effects */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: var(--main-color);
+            color: #ffffff;
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--hover-color); /* Coral hover effect */
+        }
+
+        .container {
+            background-color: var(--light-bg);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem auto;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--main-color);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 70%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-box button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            background-color: var(--btn-color);
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .search-box button:hover {
+            background-color: var(--hover-color); /* Coral hover effect for button */
+        }
+
+        .forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .day {
+            background-color: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .day:hover {
+            background-color: var(--bg-color); /* Light gray for hover */
+            transform: translateY(-5px);
+        }
+
+        .weather-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .temp {
+            font-size: 1.5rem;
+            color: var(--accent-color); /* Coral for temperature */
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: var(--main-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 1.5rem 0;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: auto;
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input, .search-box button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Back</a> 
+</nav>
+
+<div class="container">
+    <h1>Your 5-Day Weather Outlook</h1>
+    <div class="search-box">
+        <input type="text" id="city-input" placeholder="Enter city name">
+        <button id="search-btn">Search</button>
+    </div>
+    <div id="forecast" class="forecast"></div>
+</div>
+
+<footer>
+    &copy; 2024 Likando Likando - All rights reserved.
+</footer>
+
+<script>
+    const apiKey = '524e7639f7db962d50b175dc66132873'; // Your OpenWeatherMap API key
+
+    document.getElementById('search-btn').addEventListener('click', function() {
+        const city = document.getElementById('city-input').value;
+        getWeather(city);
+    });
+
+    async function getWeather(city) {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
+        const data = await response.json();
+        displayForecast(data);
+    }
+
+    function displayForecast(data) {
+        const forecastContainer = document.getElementById('forecast');
+        forecastContainer.innerHTML = ''; // Clear previous forecast
+        const forecastList = data.list;
+
+        for (let i = 0; i < forecastList.length; i += 8) { // Fetches forecast for 5 days (every 8th index)
+            const dayData = forecastList[i];
+            const date = new Date(dayData.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' });
+            const temp = Math.round(dayData.main.temp);
+            const weather = dayData.weather[0].main;
+            const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}@2x.png`;
+
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('day');
+
+            dayDiv.innerHTML = `
+                <span>${date}</span>
+                <img class="weather-icon" src="${weatherIcon}" alt="${weather}">
+                <span>${weather}</span>
+                <span class="temp">${temp}°C</span>
+            `;
+
+            forecastContainer.appendChild(dayDiv);
+        }
+    }
+</script>
+
+</body>
+</html>

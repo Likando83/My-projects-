@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+:root {
+    --main-color: #2C3E50; /* Dark blue-gray */
+    --accent-color: #E74C3C; /* Tomato red */
+    --text-color: #34495E; /* Deep gray for text */
+    --bg-color: #ECF0F1; /* Light gray background */
+    --light-bg: #FFFFFF; /* White for containers */
+    --border-color: #BDC3C7; /* Light gray for borders */
+    --btn-color: #2C3E50; /* Dark blue-gray for buttons */
+    --hover-color: #E74C3C; /* Tomato red for hover effects */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+nav {
+    background-color: var(--main-color);
+    color: #ffffff;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--hover-color); /* Tomato red hover effect */
+}
+
+.container {
+    background-color: var(--light-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 90%;
+    margin: 2rem auto;
+    flex-grow: 1;
+    text-align: center;
+}
+
+h1 {
+    color: var(--main-color);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.search-box input {
+    width: 70%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-box button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: var(--btn-color);
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-box button:hover {
+    background-color: var(--hover-color); /* Tomato red hover effect for button */
+}
+
+.forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.day {
+    background-color: var(--light-bg);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.day:hover {
+    background-color: var(--bg-color); /* Light gray for hover */
+    transform: translateY(-5px);
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+}
+
+.temp {
+    font-size: 1.25rem;
+    color: var(--accent-color); /* Tomato red for temperature */
+}
+
+footer {
+    background-color: var(--main-color);
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: var(--hover-color);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+
+    nav {
+        flex-direction: column;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box input, .search-box button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
